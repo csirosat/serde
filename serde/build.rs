@@ -13,6 +13,7 @@ fn main() {
 
     let target = env::var("TARGET").unwrap();
     let emscripten = target == "asmjs-unknown-emscripten" || target == "wasm32-unknown-emscripten";
+    let volkh = target == "thumbv7m-unknown-linux-uclibc";
 
     // std::collections::Bound was stabilized in Rust 1.17
     // but it was moved to core::ops later in Rust 1.26:
@@ -55,7 +56,7 @@ fn main() {
     //
     // Disabled on Emscripten targets as Emscripten doesn't
     // currently support integers larger than 64 bits.
-    if minor >= 26 && !emscripten {
+    if minor >= 26 && !emscripten && !volkh {
         println!("cargo:rustc-cfg=integer128");
     }
 
